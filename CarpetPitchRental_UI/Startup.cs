@@ -1,3 +1,5 @@
+using CarpetPitchRental_BLL.Classes;
+using CarpetPitchRental_BLL.Interfaces;
 using CarpetPitchRental_DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +30,9 @@ namespace CarpetPitchRental_UI
             {
                 options.UseSqlServer(Configuration.GetConnectionString("SqlConnection"));
             });
+
+            //IUnitOfWork gördügün zaman bana UnitOfWork nesnesi üret!
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
