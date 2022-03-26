@@ -1,8 +1,11 @@
 using CarpetPitchRental_BLL.Classes;
+using CarpetPitchRental_BLL.EmailService;
 using CarpetPitchRental_BLL.Interfaces;
 using CarpetPitchRental_DAL;
+using CarpetPitchRental_EL.IdentityModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,8 +36,20 @@ namespace CarpetPitchRental_UI
 
             //IUnitOfWork gördügün zaman bana UnitOfWork nesnesi üret!
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IEmailSender, EmailSender>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+            services.AddIdentity<AppUser, AppRole>(opts =>
+            {
+                opts.User.RequireUniqueEmail = true;
+                opts.Password.RequiredLength = 6;
+                opts.Password.RequireNonAlphanumeric = false;
+                opts.Password.RequireLowercase = false;
+                opts.Password.RequireUppercase = false;
+                opts.Password.RequireDigit = false;
+                opts.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._+";
+            }).AddDefaultTokenProviders().AddEntityFrameworkStores<MyContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
