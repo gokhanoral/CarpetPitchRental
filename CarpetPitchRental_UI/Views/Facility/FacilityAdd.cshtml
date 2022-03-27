@@ -1,0 +1,102 @@
+﻿@model FacilityViewModel
+@{
+    ViewData["Title"] = "FacilityAdd";
+    Layout = "~/Views/Shared/_LayoutCPR.cshtml";
+}
+
+<div class="col-md-12">
+    <br />
+    <h4 style="text-align:left;font-weight:bold">YENİ TESİS EKLE </h4>
+    <br />
+</div>
+<div class="col-md-6">
+
+    <form asp-controller="Facility" asp-action="FacilityAdd" method="post">
+
+        <div class="form-group">
+            <span class="text-danger" style="font-weight:bold;margin-right:3px"> * </span>
+            <label for="City" style="font-weight:bold">İL</label>
+            <select id="CitySelect" name="City" class="form-control">
+                <option selected value="0">***İl Seçiniz***</option>
+                @foreach (var item in ViewBag.Cities)
+                {
+                    <option value="@item.Id">@item.CityName</option>
+                }
+
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DistrictId" style="font-weight:bold">İlçe Adı</label>
+            <select asp-for="DistrictId" id="DistrictSelect" name="DistrictId" class="form-control">
+                <option selected value="0">--İlçe Seçiniz--</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="FacilityName" class="control-label" style="font-weight:bold">Tesis Adı</label>
+            <input asp-for="FacilityName" type="text" class="form-control" />
+            <span asp-validation-for="FacilityName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PhoneNumber" class="control-label" style="font-weight:bold">Telefon Numarası</label>
+            <input asp-for="PhoneNumber" type="text" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Email" class="control-label" style="font-weight:bold">Email</label>
+            <input asp-for="Email" type="text" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Address" class="control-label" style="font-weight:bold">Adres</label>
+            <input asp-for="Address" type="text" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Ekle" class="btn btn-success btn-block text-light" />
+        </div>
+    </form>
+</div>
+@section Scripts{
+    <script>
+        //CitySelect combodan il seçildiğinde bu fonksiyon çalışacak
+        //change event
+        $('#CitySelect').on('change', function () {
+            //İlçe combosunu temizle ve içine ilk değerini ata.
+            var $dropdown = $("#DistrictSelect");
+            $dropdown.empty();
+            $dropdown.append("<option selected value='0'>***İlçe Seçiniz***</option>");
+
+            //Hangi ilin seçili olduğunu alalım.
+            var cityId = this.value;
+            //İl combosundan seçilen değer 0'dan büyükse
+            //Yani gerçekten il seçildiyse aşağıdaki metoda gitsin
+            //O metot aracılığıyla ile ait ilçeleri getirsin.
+            if (cityId > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: '/City/GetCityDistricts/' + cityId,
+                    success: function (res) {
+
+                        var $dropdown = $("#DistrictSelect");
+                        $dropdown.empty();
+                        $dropdown.append("<option selected value='0'>***İlçe Seçiniz***</option>");
+
+                        //Bu bir jquery foreach döngüsüdür.
+                        //Gelen json sonucunun her birini ilçe combosuna ekler.
+                        $.each(res.data, function () {
+                            $dropdown.append($("<option />").val(this.id).text(this.districtName));
+                        });
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    },
+                });
+            }
+        });
+
+    </script>
+}

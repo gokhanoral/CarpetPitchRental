@@ -1,0 +1,43 @@
+﻿@model List<FacilityViewModel>
+@{
+    ViewData["Title"] = "GetAllFacilities";
+    Layout = "~/Views/Shared/_LayoutCPR.cshtml";
+}
+
+<div class=" col-md-12">
+    <h2 style="text-align:left">TESİSLERİMİZ</h2> <br />
+    <a asp-controller="Facility" asp-action="FacilityAdd" class="btn btn-blue" style="background-color:#6095f6; font-weight:bold;">TESİS EKLE</a>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <td style="font-weight: bold;">Tesis Id</td>
+                <td style="font-weight: bold;">Tesis Adı</td>
+                <td style="font-weight: bold;">Telefon Numarası</td>
+                <td style="font-weight: bold;">Email</td>
+                <td style="font-weight: bold;">Adress</td>
+                <td style="text-align: center;font-weight: bold;">İşlemler</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.FacilityName</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>@item.Email</td>
+                    <td>@item.Address</td>
+                    <td style="text-align: center">
+                        <a asp-controller="Facility" asp-action="FacilityEdit" asp-route-id="@item.Id" class="btn btn-warning text-light">Düzenle</a>
+                        <a asp-controller="Facility" asp-action="FacilityDelete" class="btn btn-danger text-light">Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <br />
+</div>
+
+
