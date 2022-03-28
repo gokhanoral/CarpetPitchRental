@@ -149,9 +149,57 @@ namespace CarpetPitchRental_UI.Controllers
         [HttpPost]
         public IActionResult FacilityEdit(FacilityViewModel model)
         {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var facility = _unitOfWork.FacilityRepository.GetFirstOrDefault(x => x.Id.Equals(model.Id));
+                    facility.FacilityName = model.FacilityName;
+                    facility.Address = model.Address;
+                    facility.DistrictId = model.DistrictId;
+                    facility.PhoneNumber = model.PhoneNumber;
+                    facility.Email = model.Email;
+
+                    bool result = _unitOfWork.FacilityRepository.Update(facility);
+                    if (result)
+                    {
+                        return RedirectToAction("GetAllFacilities", "Facility");
+                        //Redirect Ana sayfa
+                    }
+                    throw new Exception("HATA : Beklenmedik bir sorun oluştu!"); //else
+
+                }
+                return View();
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("HATA : Beklenmedik bir sorun oluştu!");
+
+            }
 
         }
+
+        [HttpGet]
+        public IActionResult FacilityDelete(int id)
+        {
+            try
+            {
+                if (id > 0)
+                {
+                    var facility = _unitOfWork.FacilityRepository.GetFirstOrDefault(x => x.Id.Equals(id));
+                    _unitOfWork.FacilityRepository.Delete(facility);
+
+                    return RedirectToAction("GetAllFacilities", "Facility");
+                }
+                throw new Exception("HATA : Beklenmedik bir sorun oluştu!");
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("HATA : Beklenmedik bir sorun oluştu!");
+            }
+            
+        }
     }
-
-
 }

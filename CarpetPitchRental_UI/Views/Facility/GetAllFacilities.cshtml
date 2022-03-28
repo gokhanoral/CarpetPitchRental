@@ -30,7 +30,7 @@
                     <td>@item.Address</td>
                     <td style="text-align: center">
                         <a asp-controller="Facility" asp-action="FacilityEdit" asp-route-id="@item.Id" class="btn btn-warning text-light">Düzenle</a>
-                        <a asp-controller="Facility" asp-action="FacilityDelete" class="btn btn-danger text-light">Sil</a>
+                        <a asp-controller="Facility" asp-action="FacilityDelete" asp-route-id="@item.Id" class="btn btn-danger text-light">Sil</a>
                     </td>
                 </tr>
             }
