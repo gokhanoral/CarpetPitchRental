@@ -146,6 +146,11 @@ namespace CarpetPitchRental_UI.Controllers
             };
             return View(model);
         }
+        [HttpPost]
+        public IActionResult FacilityEdit(FacilityViewModel model)
+        {
+
+        }
     }
 
 

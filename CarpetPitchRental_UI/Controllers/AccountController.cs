@@ -90,13 +90,13 @@ namespace CarpetPitchRental_UI.Controllers
                         Body = $"Merhaba {newUser.Name} {newUser.Surname},<br> Hesabınızı aktifleştirmek için <a href='{HtmlEncoder.Default.Encode(callBackUrl)}'>buraya<a/> tıklayınız."
                     };
                     await _emailSender.SendAsync(emailMessage);
-                    //patient tablosuna ekleme yapılmalıdır.
-                    Member newPatient = new Member()
+                    //member tablosuna ekleme yapılmalıdır.
+                    Member newMember = new Member()
                     {
                         TCNumber = model.TCNumber,
                         UserId = newUser.Id
                     };
-                    if (_unitOfWork.MemberRepository.Add(newPatient) == false)
+                    if (_unitOfWork.MemberRepository.Add(newMember) == false)
                     {
                         //sistem yöneticisine email gitsin.
                         var emailMessageToAdmin = new EmailMessage()
